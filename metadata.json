@@ -1,0 +1,8 @@
+{
+  "name": "NEET Prep AI",
+  "description": "AI-powered NEET UG learning & revision platform for Indian medical aspirants featuring NCERT PDF question extraction, NTA pattern mock tests with +4/-1 marking, tailored 7-day study timetables, and coaching cohort analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

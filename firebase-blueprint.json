@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Registered platform user profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "owner"] },
+        "avatar": { "type": "string" },
+        "gradeLevel": { "type": "string" },
+        "enrolledSubjects": { "type": "array" },
+        "studyStreak": { "type": "number" },
+        "xpPoints": { "type": "number" },
+        "overallAccuracy": { "type": "number" },
+        "totalQuestionsSolved": { "type": "number" },
+        "studyHoursThisWeek": { "type": "number" }
+      },
+      "required": ["email", "name", "role"]
+    },
+    "Student": {
+      "title": "Student Record",
+      "description": "Student directory entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "gradeLevel": { "type": "string" },
+        "enrolledSubjects": { "type": "array" },
+        "status": { "type": "string" },
+        "accuracyRate": { "type": "number" },
+        "testsCompleted": { "type": "number" },
+        "joinDate": { "type": "string" },
+        "lastActive": { "type": "string" }
+      },
+      "required": ["email", "name"]
+    },
+    "PracticeSet": {
+      "title": "Practice Set Record",
+      "description": "MCQ Practice Set or Exam Result",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "sourceType": { "type": "string" },
+        "dateCreated": { "type": "string" },
+        "questions": { "type": "array" },
+        "score": { "type": "number" },
+        "completed": { "type": "boolean" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" }
+      },
+      "required": ["title", "subject"]
+    },
+    "UploadedPdf": {
+      "title": "Uploaded PDF Record",
+      "description": "Uploaded student document metadata and extracted content",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileSize": { "type": "string" },
+        "uploadedByUserId": { "type": "string" },
+        "uploadedByName": { "type": "string" },
+        "uploadedByEmail": { "type": "string" },
+        "uploadedAt": { "type": "string" },
+        "subject": { "type": "string" },
+        "selectedChapters": { "type": "array" },
+        "numQuestionsExtracted": { "type": "number" },
+        "snippetPreview": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "fileName", "uploadedByEmail"]
+    },
+    "CustomExamPaper": {
+      "title": "Custom Exam Paper",
+      "description": "Extracted NEET exam papers from user PDFs and custom tests",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "examTitle": { "type": "string" },
+        "subject": { "type": "string" },
+        "code": { "type": "string" },
+        "durationMinutes": { "type": "number" },
+        "totalMarks": { "type": "number" },
+        "instructions": { "type": "array" },
+        "questions": { "type": "array" },
+        "uploadedByEmail": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "sourcePdfName": { "type": "string" }
+      },
+      "required": ["examTitle", "code", "durationMinutes", "questions"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profiles collection"
+    },
+    "/users/{userId}/practiceSets/{setId}": {
+      "schema": { "$ref": "#/entities/PracticeSet" },
+      "description": "User practice sets subcollection"
+    },
+    "/users/{userId}/customExams/{examId}": {
+      "schema": { "$ref": "#/entities/CustomExamPaper" },
+      "description": "User custom exams subcollection"
+    },
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/Student" },
+      "description": "Student directory collection"
+    },
+    "/practice_sets/{setId}": {
+      "schema": { "$ref": "#/entities/PracticeSet" },
+      "description": "Global practice sets collection"
+    },
+    "/custom_exam_papers/{paperId}": {
+      "schema": { "$ref": "#/entities/CustomExamPaper" },
+      "description": "Global custom exam papers collection"
+    },
+    "/uploaded_pdfs/{pdfId}": {
+      "schema": { "$ref": "#/entities/UploadedPdf" },
+      "description": "Uploaded PDF documents collection"
+    }
+  }
+}

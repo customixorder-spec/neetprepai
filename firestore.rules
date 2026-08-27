@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && (request.auth.uid == userId || request.auth.token.email == userId);
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn();
+
+      // Practice Sets Subcollection
+      match /practiceSets/{setId} {
+        allow read, write: if isSignedIn();
+      }
+
+      // Custom Exams Subcollection
+      match /customExams/{examId} {
+        allow read, write: if isSignedIn();
+      }
+    }
+
+    // Student Directory Collection
+    match /students/{studentId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    // Global Practice Sets Collection
+    match /practice_sets/{setId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    // Global Custom Exam Papers Collection
+    match /custom_exam_papers/{paperId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    // Uploaded PDFs Collection
+    match /uploaded_pdfs/{pdfId} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+  }
+}
+
